@@ -6,6 +6,8 @@
 
 package net.reichholf.dreamdroid.parsers.enigma2.saxhandler;
 
+import android.text.Html;
+
 import net.reichholf.dreamdroid.helpers.ExtendedHashMap;
 import net.reichholf.dreamdroid.helpers.enigma2.CurrentService;
 import net.reichholf.dreamdroid.helpers.enigma2.Event;
@@ -208,6 +210,9 @@ public class E2CurrentServiceHandler extends E2SimpleHandler {
 				break;
 			case TAG_E2SERVICENAME:
 				inServiceName = false;
+				String sname = mResult.getString(CurrentService.KEY_SERVICE_NAME);
+				if (sname != null)
+					mResult.put(CurrentService.KEY_SERVICE_NAME, Html.fromHtml(sname, Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 			case TAG_E2PROVIDERNAME:
 				inProviderName = false;
@@ -258,6 +263,9 @@ public class E2CurrentServiceHandler extends E2SimpleHandler {
 				break;
 			case TAG_E2EVENTSERVICENAME:
 				inEventServiceName = false;
+				String ename = mEvent.getString(Event.KEY_SERVICE_NAME);
+				if (ename != null)
+					mEvent.put(Event.KEY_SERVICE_NAME, Html.fromHtml(ename, Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 			case TAG_E2EVENTPROVIDERNAME:
 				inEventProviderName = false;
@@ -270,9 +278,15 @@ public class E2CurrentServiceHandler extends E2SimpleHandler {
 				break;
 			case TAG_E2EVENTTITLE:
 				inEventTitle = false;
+				String etitle = mEvent.getString(Event.KEY_EVENT_TITLE);
+				if (etitle != null)
+					mEvent.put(Event.KEY_EVENT_TITLE, Html.fromHtml(etitle, Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 			case TAG_E2EVENTDESCRIPTION:
 				inEventDescription = false;
+				String desc = mEvent.getString(Event.KEY_EVENT_DESCRIPTION);
+				if (desc != null)
+					mEvent.put(Event.KEY_EVENT_DESCRIPTION, Html.fromHtml(desc, Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 			case TAG_E2EVENTSTART:
 				inEventStart = false;
@@ -288,6 +302,9 @@ public class E2CurrentServiceHandler extends E2SimpleHandler {
 				break;
 			case TAG_E2EVENTDESCRIPTIONEXTENDED:
 				inEventDescriptionExtended = false;
+				String extDesc = mEvent.getString(Event.KEY_EVENT_DESCRIPTION_EXTENDED);
+				if (extDesc != null)
+					mEvent.put(Event.KEY_EVENT_DESCRIPTION_EXTENDED, Html.fromHtml(extDesc.replace("\u008A", "\n"), Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 			case TAG_E2CURRENTSERVICEINFORMATION:
 				mResult.put(CurrentService.KEY_EVENTS, mEvents);

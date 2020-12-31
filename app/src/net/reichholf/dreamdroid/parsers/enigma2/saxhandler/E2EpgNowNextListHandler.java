@@ -6,6 +6,8 @@
 
 package net.reichholf.dreamdroid.parsers.enigma2.saxhandler;
 
+import android.text.Html;
+
 import net.reichholf.dreamdroid.helpers.ExtendedHashMap;
 import net.reichholf.dreamdroid.helpers.enigma2.Event;
 
@@ -124,14 +126,20 @@ public class E2EpgNowNextListHandler extends E2ListHandler {
 				break;
 			case TAG_E2EVENTTITLE:
 				inTitle = false;
+				String etitle = mEvent.getString(Event.KEY_EVENT_TITLE);
+				if (etitle != null)
+					mEvent.put(Event.KEY_EVENT_TITLE, Html.fromHtml(etitle, Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 			case TAG_E2EVENTDESCRIPTION:
 				inDescription = false;
+				String desc = mEvent.getString(Event.KEY_EVENT_DESCRIPTION);
+				if (desc != null)
+					mEvent.put(Event.KEY_EVENT_DESCRIPTION, Html.fromHtml(desc, Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 			case TAG_E2EVENTDESCRIPTIONEXTENDED:
 				String descEx = mEvent.getString(Event.KEY_EVENT_DESCRIPTION_EXTENDED);
 				if (descEx != null)
-					mEvent.put(Event.KEY_EVENT_DESCRIPTION_EXTENDED, descEx.replace("\u008a", "\n"));
+					mEvent.put(Event.KEY_EVENT_DESCRIPTION_EXTENDED, Html.fromHtml(descEx.replace("\u008a", "\n"), Html.FROM_HTML_MODE_LEGACY));
 				inDescriptionEx = false;
 				break;
 			case TAG_E2EVENTSERVICEREFERENCE:
@@ -139,6 +147,9 @@ public class E2EpgNowNextListHandler extends E2ListHandler {
 				break;
 			case TAG_E2EVENTSERVICENAME:
 				inServiceName = false;
+				String sname = mEvent.getString(Event.KEY_SERVICE_NAME);
+				if (sname != null)
+					mEvent.put(Event.KEY_SERVICE_NAME, Html.fromHtml(sname, Html.FROM_HTML_MODE_LEGACY).toString());
 				break;
 		}
 	}
